@@ -1,10 +1,4 @@
 ###############################################################################
-###############################################################################
-#                        R for Climate Analysis
-# This is a series of R code used for downloading formatting and processing climate 
-# layers from WSL and NASA
-# 
-###############################################################################
 ###############################################################################    
 #  BI. Downloading the NASA Earth Exchange Global Daily Downscaled Projections 
 # (NEX-GDDP-CMIP6) from AWS (https://nex-gddp-cmip6.s3.us-west-2.amazonaws.com/index.html)
@@ -12,7 +6,7 @@
 ###############################################################################
 # The code requires that you have installed the AWS Command Line Interface from https://aws.amazon.com/cli/
 # After installing AWI CLI you can check the path by entering "where aws"in the command prompt, then set the 
-# path in line 48 of the code below.
+# path in line 37 of the code below.
 # The NEX-GDDP-CMIP6 subfolder directory naming is Model/Simulation/Variant/variable.
 # This code downloads files by the file version in the selected variable (latest is v2.0). 
 # There are 9 variable from 35 ESMs available for five simulation - historical covering 1950 to 2014 and four emission scenarios# (SSP126. SSP245, SSP370 & SSP585) covering 2015-2100. 
@@ -28,7 +22,7 @@ library(aws.s3)
 # ==== USER INPUTS ====
 # information for the ESM, simulation, variable and version you are after
 esm      <- "EC-Earth3"       # Change to the ESM you are after
-ssp      <- "historical"      # or "ssp126", "ssp245", "ssp585", etc.
+ssp      <- "historical"      # options are: historical, ssp126, ssp245, ssp370 or ssp585
 variable <- "pr"              # pr, tasmax, tasmin, etc.
 variant  <- "r1i1p1f1"        # follows the ESM selected - check Table 2 in the link above
 grid     <- "gr"              # follows the ESM selected - check Table 2 in the link above
@@ -61,4 +55,5 @@ for (year in years) {
   cat("Downloading:", file_name, "\n")
   system(cmd)
 }
+
 
