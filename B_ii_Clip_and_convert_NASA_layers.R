@@ -17,12 +17,12 @@ end_year <- 2100
 ref_raster <- rast("C:/Users/User/Documents/Borneo_pr_day_GFDL-ESM4_ssp126_r1i1p1f1_gr1_2015.tif")
 
 #4. Define metadata
-Var <- "pr"  # Options: pr, tas, tasmin, tasmax, hurs
-ESM <- "GFDL-ESM4"
-SSP <- "ssp585"
-Variant <- "r1i1p1f1"
-Grid <- "gr1"
-Geo <- "Borneo"
+Var <- "pr"                 # Options: pr, tas, tasmin, tasmax, hurs
+ESM <- "GFDL-ESM4"          # Options: IPSL-CM6A-LR, GFDL-ESM4, MPI-ESM1-2-HR, MRI-ESM2-0, UKESM1-0-LL
+SSP <- "ssp585"             # Option: ssp126, ssp245, ssp370, ssp585
+Variant <- "r1i1p1f1"       # Options: r1i1p1f1_gr1 (gfdl, ipsl, mpi & mri) & r1i1p1f2 (UKESM1)
+Grid <- "gr1"               # Options: gr1 (gfdl), gr (ipsl), gn (mpi, mri & UKESM1)
+Geo <- "Borneo"             # Your area of interest
 Ver_historic <- "v2.0"
 Ver_future <- "v2.0"
 
@@ -86,4 +86,5 @@ for (year in start_year:end_year) {
            unit = unit_str,
            overwrite = TRUE)
 }
+
 
