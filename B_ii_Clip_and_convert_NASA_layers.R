@@ -1,31 +1,37 @@
-# Load libraries
+#################################################################################################################################################
+# This code clips the global grid to the area of interest. It is based on a reference raster (code block 3), but it can be modified to work on a
+# supplied extent (xmin, xmax, ymin, and ymax). For precipitation (pr), the values are converted from kg/m/s to mm/day. 
+# Temperature values (tas, tasmax, and tasmin) are converted from Kelvin to Celsius. The years you want to process are set in code block 2, 
+# and the EMS details are entered in code block 3. The output files are saved in CDF format. In this case, the files are saved in the same 
+# directory as the global grid - output directory in code block 5. The global grids can then be zipped or deleted after processing.
+#################################################################################################################################################
+#1. Load libraries
 library(terra)
 library(ncdf4)
 
-# Set the start and end years
+#2. Set the start and end years
 start_year <- 2011
 end_year <- 2100
 
-# Load reference raster
+#3. Load reference raster
 ref_raster <- rast("C:/Users/User/Documents/Borneo_pr_day_GFDL-ESM4_ssp126_r1i1p1f1_gr1_2015.tif")
 
-# Define metadata
+#4. Define metadata
 Var <- "pr"  # Options: pr, tas, tasmin, tasmax, hurs
 ESM <- "GFDL-ESM4"
 SSP <- "ssp585"
 Variant <- "r1i1p1f1"
 Grid <- "gr1"
 Geo <- "Borneo"
-
-# Version codes
 Ver_historic <- "v2.0"
 Ver_future <- "v2.0"
 
-# Output directory
+#5. Base path and output directory
+base_path <- "C:/Users/User/Documents/NASAdata/"
 output_dir <- file.path("C:/Users/User/Documents/NASAdata", ESM, SSP, Var)
 if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
 
-# Loop over years
+#6. Loop over years
 for (year in start_year:end_year) {
   
   # Determine scenario and version
@@ -33,7 +39,7 @@ for (year in start_year:end_year) {
   version <- ifelse(year < 2015, Ver_historic, Ver_future)
   
   # Input file path
-  nc_file <- file.path("C:/Users/User/Documents/NASAdata", ESM, scenario, Var,
+  nc_file <- file.path(base_path, ESM, scenario, Var,
                        paste0(Var, "_day_", ESM, "_", scenario, "_", Variant,"_", Grid, "_", year, "_", version, ".nc"))
   
   if (!file.exists(nc_file)) {
@@ -80,3 +86,4 @@ for (year in start_year:end_year) {
            unit = unit_str,
            overwrite = TRUE)
 }
+
