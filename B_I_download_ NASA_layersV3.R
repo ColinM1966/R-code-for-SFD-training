@@ -30,8 +30,8 @@ library(aws.s3)
 esm      <- "EC-Earth3"       # Change to the ESM you are after
 ssp      <- "historical"      # or "ssp126", "ssp245", "ssp585", etc.
 variable <- "pr"              # pr, tasmax, tasmin, etc.
-variant  <- "r1i1p1f1"        # follows the ESM selected - check Table 3 in the link above
-grid     <- "gr"              # follows the ESM selected - check Table 3 in the link above
+variant  <- "r1i1p1f1"        # follows the ESM selected - check Table 2 in the link above
+grid     <- "gr"              # follows the ESM selected - check Table 2 in the link above
 version  <- "v2.0"            # e.g., v2.0, v1.0 - v2.0 is the lastest, unlike you would use an earlier version
 
 # ==== YEAR RANGE ====
@@ -61,3 +61,4 @@ for (year in years) {
   cat("Downloading:", file_name, "\n")
   system(cmd)
 }
+
