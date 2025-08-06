@@ -12,9 +12,11 @@ This code clips the global layers to the area of interest using a reference rast
 
 ## Climate Extreme Indices (CEIs)
 The CEIs are based on [Appendix 6](https://www.ipcc.ch/report/ar6/wg1/downloads/report/IPCC_AR6_WGI_AnnexVI.pdf) of [Climate Change 2021: The Physical Science Basis](https://www.ipcc.ch/report/ar6/wg1/).
-### B.iii. 
+
+### B.iii. Maximum number of consecutive days with more (CWD) or less (CDD) than 1 mm of precipitation per day
 
 ### B.iv. Count of days when rainfall exceeds the CEI thresholds
 This code calculates the number of days when the rainfall exceeds 1, 5, 10, 20, & 55 mm.
+
 ### B.v. Maximum and mean Rx1day for 30-year climatologies
 This code utilizes the clipped and converted PR layer to generate the yearly maximum 1-day rainfall total. The results are then summarised as a mean and maximum value for the 30-year climatology.
