@@ -2,7 +2,7 @@
 ## Daily rainfall exceedance analysis for multiple thresholds
 ## Includes: 
 ##   A. Annual count of days exceeding threshold
-##   B. Climatological mean over a set period
+##   B. Climatological max and mean over a set period
 ################################################################################
 
 # 1. Load required packages
@@ -131,3 +131,4 @@ for (scenario in names(scenarios)) {
     }
   }
 }
+
