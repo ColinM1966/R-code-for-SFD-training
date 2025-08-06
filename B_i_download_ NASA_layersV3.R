@@ -1,6 +1,6 @@
 ###############################################################################
 ###############################################################################    
-#  BI. Downloading the NASA Earth Exchange Global Daily Downscaled Projections 
+#  B.i. Download the NASA Earth Exchange Global Daily Downscaled Projections 
 # (NEX-GDDP-CMIP6) from AWS (https://nex-gddp-cmip6.s3.us-west-2.amazonaws.com/index.html)
 #
 ###############################################################################
@@ -55,5 +55,6 @@ for (year in years) {
   cat("Downloading:", file_name, "\n")
   system(cmd)
 }
+
 
 
