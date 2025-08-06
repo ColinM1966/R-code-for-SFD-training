@@ -1,6 +1,6 @@
 ################################################################################
 # Calculates Rx1day (maximum daily rainfall) for all ESMs, scenarios,
-# and climatology periods. Output: Annual Rx1day rasters + climatology means
+# and climatology periods. Output: Annual Rx1day rasters + climatology max and means
 ################################################################################
 
 library(raster)
@@ -121,4 +121,5 @@ for (model in models) {
     message("Climatology saved: ", Rx1day_mean_file)
     message("Climatology saved: ", Rx1day_max_file)
   }
+
 }
