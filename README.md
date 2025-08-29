@@ -5,7 +5,7 @@ This is a series of R code used for downloading formatting and processing the CH
 # A. CHELSA
 ## Working with CHELSA Data
 ### A.i. Download CHELSA Data
-Version 2.1 of the CHELSA data has a limited range of ESMs and SSPs available, to expand the range of ESMs or SSPs the data needs to be downloaded from CMIP6 using the code developed by [Karger 2021](https://gitlabext.wsl.ch/karger/chelsa_cmip6) The R version of Karger's code with modifications is reproduced here. The code needs to be used in conjunction with the [Earth System Grid Federation's Metagrid web application](https://aims2.llnl.gov/search).
+Version 2.1 of the CHELSA data has a limited range of ESMs and SSPs available, to expand the range of ESMs or SSPs the data needs to be downloaded from CMIP6 using the code developed by [Karger 2021](https://gitlabext.wsl.ch/karger/chelsa_cmip6) A modified version of Karger's R code  is reproduced here. The  [Earth System Grid Federation's Metagrid web application](https://aims2.llnl.gov/search) is used in conjunction with this code to obtain information on what ESMs, SSPs, etc, are available.
 
 ### A.2.
 
