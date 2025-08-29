@@ -2,6 +2,12 @@
 
 This is a series of R code used for downloading formatting and processing the CHELSA and NASA climate layers. The series A is for the CHELSA layers and B for the NASA layers.
 
+# A. CHELSA
+## Working with CHELSA Data
+### A.i. Download CHELSA Data
+Version 2.1 of the CHELSA data has a limited range of ESMs and SSPs available, to expand the range of ESMs or SSPs the data needs to be downloaded from CMIP6 using the code developed by [Karger 2021](https://gitlabext.wsl.ch/karger/chelsa_cmip6) The R version of Karger's code with modifications is reproduced here. 
+
+### A.2.
 
 # B. NASA 
 ## Working with NASA Data
