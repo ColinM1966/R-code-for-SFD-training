@@ -1,12 +1,11 @@
 #######################################################################################
 #
-# This is a modification of Kargan (2021). The first section should only need 
-# to be installed once, it installs resiculate and then uses the reticulate 
-# package to install python and the chelsa-cmip6 that is used to download the
-# CMIP6 projections.
+# This is a modification of Karger (2021). The first section should only need to be 
+# installed once, it installs reticulate and then uses the reticulate package to install 
+# Python and the chelsa-cmip6 that is used to download the CMIP6 projections.
 #
 #######################################################################################
-# A. Installing reticulate, python and chelsa-cmip6 (should only need to run this once)
+# A. Installing reticulate, Python, and chelsa-cmip6 (should only need to run this once)
 # 1. Install and load reticulate (if not already installed)
 install.packages("reticulate", dependencies = TRUE)
 library(reticulate)
@@ -18,7 +17,7 @@ reticulate::install_python(version = "3.12")
 # 3. Define the path to the newly installed Python
 python_path <- "C:/Users/User/AppData/Local/r-reticulate/r-reticulate/pyenv/pyenv-win/versions/3.12.10/python.exe"
 
-# 4. Create a clean virtual environment using that Python
+# 4. Create a clean virtual environment using Python
 reticulate::virtualenv_create("chelsa_env", python = python_path)
 
 # 5. Tell reticulate to use this environment in this R session
@@ -37,20 +36,18 @@ chelsa_cmip6 <- reticulate::import("chelsa_cmip6")
 print(chelsa_cmip6)
 ######################################################################################
 # B. Downloading data from CMIP6
-# 1. Load package and 
+# 1. Loads the required packages and sets up R to run the chelsa_cmip6 package 
 library(reticulate)
 library(terra)
 use_virtualenv("chelsa_env", required = TRUE)
 chelsa_cmip6 <- import("chelsa_cmip6")
 
 
-# 2. Load reference raster and extracts extent
+# 2. Loads the reference raster and extracts the extent
 ref_raster <- rast("C:/Users/User/Documents/Borneo_pr_day_GFDL-ESM4_ssp126_r1i1p1f1_gr1_2015.tif")
-
-# extract extent
 e <- ext(ref_raster)
 
-#3.  define model, scenario and climatology
+#3.  Defines the ESM, scenario, and climatology
 source_id        <- 'MPI-ESM1-2-LR'     #
 experiment_id    <- 'ssp585'            # Shared socioeconomic pathways option ssp126, ssp245, ssp370, ssp585
 institution_id   <- 'MPI-M'             #
@@ -60,11 +57,11 @@ Base_finish      <- '2010-12-15'        # end date for the baseline
 Climato_start    <- '2011-01-15'        # start date for the projection
 Climato_finish   <- '2040-12-15'        # end date for the projection
 
-#4. construct output folder structure
+#4. Constructs the output folder structure
 outdir <- file.path("C:/Users/User/Documents", source_id, experiment_id)
 dir.create(outdir, recursive = TRUE, showWarnings = FALSE)
 
-#5.  run CHELSA call
+#5.  Runs the CHELSA call
 chelsa_cmip6$GetClim$chelsa_cmip6(
   activity_id   = 'ScenarioMIP', 
   table_id      = 'Amon', 
@@ -81,4 +78,5 @@ chelsa_cmip6$GetClim$chelsa_cmip6(
   ymin          = e$ymin, 
   ymax          = e$ymax,
   output        = normalizePath(outdir, winslash = "/")
+
 )
