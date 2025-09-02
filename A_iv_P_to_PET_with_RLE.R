@@ -27,7 +27,7 @@ for (period in time_periods) {
   out_dir  <- file.path(base_dir, esm, ssp, "PtoPET", period)
   dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
   
-  # --- Load TAS (°C expected) ---
+  # --- Load TAS (Â°C expected) ---
   tas_files <- list.files(
     file.path(base_dir, esm, ssp),
     pattern = paste0(geo,"_tas_",esm,"_",ssp,"_",period,".nc$"),
@@ -51,7 +51,7 @@ for (period in time_periods) {
     pr  <- project(pr, "EPSG:4326")
   }
   
-  # --- Ensure TAS is in °C (CHELSA often is; CMIP raw tas is K). Auto-convert if it looks like Kelvin.
+  # --- Ensure TAS is in Â°C (CHELSA often is; CMIP raw tas is K). Auto-convert if it looks like Kelvin.
   # If monthly temps have values > 100, assume K and convert.
   if (global(tas, "mean", na.rm = TRUE)[1,1] > 100) {
     tas <- tas - 273.15
