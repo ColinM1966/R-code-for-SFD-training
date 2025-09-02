@@ -36,7 +36,7 @@ for (var in variables) {
     # Load raster
     r <- rast(f)
     
-    # Convert to °C for temperature variables only
+    # Convert to Â°C for temperature variables only
     if (var %in% c("tas", "tasmax", "tasmin")) {
       r <- r - 273.15
     }
