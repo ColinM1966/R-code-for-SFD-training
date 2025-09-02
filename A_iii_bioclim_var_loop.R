@@ -4,18 +4,19 @@
 # nc files. The code works thru the 4 climatologies for a specified ESM/ssp and
 # saves the results as tif files for each of the 19 bioclimatic variables
 ##############################################################################
-
+#1. Load required packages
 library(terra)
 library(dismo)
 
-# === User inputs ===
+#2. Define model
 esm <- "MPI-ESM1-2-LR"   # Example: "EC-Earth3", "MPI-ESM1-2-LR"
 ssp <- "ssp585"        # Example: "ssp126", "ssp245", "ssp370", "ssp585"
 geo <- "Borneo"
-# === Base directory ===
+
+#3. Set base directory
 base_dir <- "D:/CHELSA"
 
-# === Define time periods ===
+#4. Define time periods
 time_periods <- list(
   historical = "1981-2010",
   future1    = "2011-2040",
@@ -23,7 +24,7 @@ time_periods <- list(
   future3    = "2071-2100"
 )
 
-# === Loop through periods ===
+#5. Loop through periods
 for (tp in names(time_periods)) {
   period <- time_periods[[tp]]
   
@@ -60,3 +61,4 @@ for (tp in names(time_periods)) {
   
   message("Finished bioclim for: ", esm, " | ", ssp, " | ", period)
 }
+
