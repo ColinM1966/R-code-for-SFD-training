@@ -1,5 +1,8 @@
 ###############################################################################
-#   Reduction in Rubber Latex Production - terra version (1 ESM & 1 SSP at a time)
+#            *****  Reduction in Rubber Latex Production  *****
+#              *** terra version (1 ESM & 1 SSP at a time) ***
+# Based on findings of Ali et al. 2020 that there is a decline of ~3 g per tapping 
+# per tree (g t−1 t−1) per 1 °C rise in minimum temperature above 23°C
 ###############################################################################
 
 library(terra)
@@ -23,7 +26,7 @@ clean_temp   <- function(r) ifel(r < 0, 0, r)   # avoids pulling into memory
 get_LY       <- function(ft, ct) (ft - ct) * b2
 
 # ---------------- BASELINE ----------------
-# Load current Tmin (1981�2010) for this ESM
+# Load current Tmin (1981–2010) for this ESM
 current_file <- list.files(
   file.path(base_dir, esm, ssp),
   pattern = paste0(geo, "_tasmin_", esm, "_", ssp, "_1981-2010\\.nc$"),
@@ -96,4 +99,4 @@ for (clim in climatologies) {
     overwrite = TRUE, NAflag = -9999
   )
 }
-plot(annual_mean)
+
