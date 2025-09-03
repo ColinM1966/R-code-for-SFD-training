@@ -9,8 +9,8 @@ Version 2.1 of the CHELSA data has a limited range of ESMs and SSPs available, t
 
 #### A.i.b. Download CHELSA Time series Data
 This code creates a monthly timeseries for the ESM. It involves some adaptation of the fefps, and fefpe parameter of the function and a for loop. The output will be a netCDF files for each month from the start year to the finish year for tas, tasmax, tasmin, and pr, and an annual timeseries for the bioclimatic variables. The dates in fefps and fefpe need to be the end and start of the year. If the model you choose uses a 360 day calender (e.g. UKESM1-0-LL), the last day of the year is the 30th.
-**Note: this takes a very long time to run
-**
+**Note: this takes a very long time to run**
+
 ### A.ii. Formatting CHELSA 
 
 ### A.iii. Calculating Bioclim variables
