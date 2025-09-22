@@ -74,11 +74,10 @@ for (year in start_year:end_year) {
   # Crop to reference raster extent
   data_cropped <- crop(data, ref_raster)
   
-  # Output file path
+  #7. Output file path and Write output
   output_file <- file.path(output_dir,
                            paste0(Geo, "_", Var, "_day_", ESM, "_", SSP, "_", Variant,"_", Grid, "_", year, "_", version, ".nc"))
   
-  # Write output
   cat("Writing to:", output_file, "\n")
   writeCDF(data_cropped,
            filename = output_file,
@@ -86,6 +85,7 @@ for (year in start_year:end_year) {
            unit = unit_str,
            overwrite = TRUE)
 }
+
 
 
 
