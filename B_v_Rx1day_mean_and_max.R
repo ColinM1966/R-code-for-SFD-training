@@ -2,7 +2,102 @@
 # Calculates Rx1day (maximum daily rainfall) for all ESMs, scenarios,
 # and climatology periods. Output: Annual Rx1day rasters + climatology max and means
 ################################################################################
+# 1. Load packages
+library(terra)
 
+
+# 2. Set up the model to be analysised
+base_path <- "C:/Users/User/Documents/Trial/"
+
+ESM      <- "EC-Earth3"
+scenario <- "ssp126"      # or "historical"
+Variant  <- "r1i1p1f1"
+Grid     <- "gr"
+Geo      <- "Borneo"
+version  <- "v2.0"
+## --------------------------------------------------
+
+years <- if(scenario=="historical") 1981:2010 else 2011:2100
+
+annual_files <- c()
+
+# 3. Calaculate the annual Rx1day ----
+for (year in years) {
+  
+  in_file <- file.path(
+    base_path,ESM,scenario,"pr",
+    paste0(Geo,"_pr_day_",ESM,"_",scenario,"_",Variant,"_",Grid,"_",year,"_",version,".nc")
+  )
+  
+  if(!file.exists(in_file)) {
+    message("missing ",in_file)
+    next
+  }
+  
+  pr <- rast(in_file)
+  crs(pr) <- "EPSG:4326"
+  
+  ## Rx1day = max daily rainfall
+  Rx1 <- app(pr, fun=max, na.rm=TRUE)
+  
+  out_dir <- file.path(base_path,ESM,scenario,"Rx1day")
+  dir.create(out_dir,recursive=TRUE,showWarnings=FALSE)
+  
+  out_file <- file.path(
+    out_dir,
+    paste0(Geo,"_Rx1day_",ESM,"_",scenario,"_",Variant,"_",Grid,"_",year,"_",version,".tif")
+  )
+  
+  writeRaster(Rx1,out_file,filetype="GTiff",NAflag=-9999,overwrite=TRUE)
+  annual_files <- c(annual_files,out_file)
+}
+
+
+# 4. Calculate the mean and max Rx1day for each climatology
+clim_periods <- list(
+  "1981-2010" = 1981:2010,
+  "2011-2040" = 2011:2040,
+  "2041-2070" = 2041:2070,
+  "2071-2100" = 2071:2100
+)
+
+for (period_name in names(clim_periods)) {
+  
+  yrs <- clim_periods[[period_name]]
+  
+  if(!any(years %in% yrs)) next
+  
+  files_period <- annual_files[
+    grep(paste(yrs,collapse="|"),annual_files)
+  ]
+  
+  if(length(files_period)==0) next
+  
+  stk <- rast(files_period)
+  
+  Rmean <- app(stk,mean,na.rm=TRUE)
+  Rmax  <- app(stk,max ,na.rm=TRUE)
+  
+  out_mean <- file.path(
+    base_path,ESM,scenario,"Rx1day",
+    paste0(Geo,"_Rx1day_mean_",ESM,"_",scenario,"_",period_name,"_",version,".tif")
+  )
+  out_max <- file.path(
+    base_path,ESM,scenario,"Rx1day",
+    paste0(Geo,"_Rx1day_max_",ESM,"_",scenario,"_",period_name,"_",version,".tif")
+  )
+  
+  writeRaster(Rmean,out_mean,filetype="GTiff",NAflag=-9999,overwrite=TRUE)
+  writeRaster(Rmax ,out_max ,filetype="GTiff",NAflag=-9999,overwrite=TRUE)
+}
+
+
+
+
+
+#################################################################################
+# This code is for batch runs of ESM/SSP/Climatologies
+##################################################################################
 library(raster)
 library(sp)
 
@@ -123,3 +218,4 @@ for (model in models) {
   }
 
 }
+
