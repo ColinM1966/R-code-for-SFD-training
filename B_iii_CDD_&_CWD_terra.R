@@ -54,7 +54,7 @@ thresholds <- list(
 
 # 6. Function to calculate CDD/CWD
 cd_days <- function(x, type, value) {
-  y <- if (type == "below") rle((x < value) * 1) else rle((x > value) * 1)
+  y <- if (type == "below") rle((x < value) * 1) else rle((x >= value) * 1)
   z <- y$lengths[y$values == 1]
   return(max(z, 0))
 }
@@ -136,3 +136,4 @@ for (model in models) {
       }
   }
 }
+
