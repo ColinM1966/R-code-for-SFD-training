@@ -2,8 +2,114 @@
 # Calculates CDD (Consecutive Dry Days) and CWD (Consecutive Wet Days) for 
 # all ESMs, scenarios, and 30-year climatologies in one script.
 # Output: Annual CDD/CWD rasters + climatology means
+# 
 ################################################################################
+## A. For a single ESM/SSP
+# 1. Load package
+library(terra)
 
+#2. Set up the run 
+ESM     <- "EC-Earth3"
+Variant <- "r1i1p1f1"
+Grid    <- "gr"
+future_ssp <- "ssp126"
+Geo <- "Borneo"
+version <- "v2.0"
+base_path <- "C:/Users/User/Documents/Trial/"
+
+#3. Define the 4 climatology blocks
+clims <- list(
+  hist   = list(ssp="historical", start=1981, end=2010),
+  fut1   = list(ssp=future_ssp,  start=2011, end=2040),
+  fut2   = list(ssp=future_ssp,  start=2041, end=2070),
+  fut3   = list(ssp=future_ssp,  start=2071, end=2100)
+)
+
+#5. Set the thresholds
+thresholds <- list(
+  CDD = list(type="below",  value=1),
+  CWD = list(type="aboveeq",value=1)  # >= 1 mm/day
+)
+
+cd_days <- function(x,type,value){
+  if(type=="below")   m <- (x <  value)
+  if(type=="aboveeq") m <- (x >= value)
+  y <- rle(m*1)
+  z <- y$lengths[y$values==1]
+  if(length(z)==0) return(0) else return(max(z))
+}
+
+#6. Main workings for calculating CDD and CWD - don't need to modify things in here
+
+for(block in names(clims)){
+  
+  ssp <- clims[[block]]$ssp
+  yrs <- clims[[block]]$start:clims[[block]]$end
+  
+  message("processing ", block, " ", ssp)
+  
+  for(year in yrs){
+    
+    f_in <- sprintf("%s%s/%s/pr/%s_pr_day_%s_%s_%s_%s_%d_%s.nc",
+                    base_path, ESM, ssp, Geo, ESM, ssp, Variant, Grid, year, version)
+    
+    if(!file.exists(f_in)){
+      message("missing: ", f_in)
+      next
+    }
+    
+    r <- rast(f_in)
+    crs(r) <- "EPSG:4326"
+    
+    for(idx in names(thresholds)){
+      info <- thresholds[[idx]]
+      DaysCount <- app(r, function(x) cd_days(x,info$type,info$value))
+      
+      prefix <- paste0(idx,"_1mm")
+      outdir <- sprintf("%s%s/%s/%s/",base_path,ESM,ssp,prefix)
+      dir.create(outdir,recursive=TRUE,showWarnings=FALSE)
+      
+      f_out <- sprintf("%s%s_%s_%s_%s_%s_%s_%d_%s.tif",
+                       outdir, Geo, prefix, ESM, ssp, Variant, Grid, year, version)
+      writeRaster(DaysCount,f_out,overwrite=TRUE)
+    }
+  }
+}
+
+# 7. Workings for calculating the CLIMATOLOGY mean + max for block defined in section 3
+
+for(block in names(clims)){
+  
+  ssp <- clims[[block]]$ssp
+  yrs <- clims[[block]]$start:clims[[block]]$end
+  
+  for(idx in names(thresholds)){
+    prefix <- paste0(idx,"_1mm")
+    
+    files <- sprintf("%s%s/%s/%s/%s_%s_%s_%s_%s_%s_%d_%s.tif",
+                     base_path, ESM, ssp, prefix,
+                     Geo, prefix, ESM, ssp, Variant, Grid, yrs, version)
+    files <- files[file.exists(files)]
+    if(length(files)==0){ next }
+    
+    s <- rast(files)
+    meanr <- app(s,mean,na.rm=TRUE)
+    maxr  <- app(s,max,na.rm=TRUE)
+    
+    fout_mean <- sprintf("%s%s/%s/%s/%s_%s_mean_%d-%d_%s.tif",
+                         base_path, ESM, ssp, prefix,
+                         Geo, prefix, clims[[block]]$start, clims[[block]]$end, version)
+    fout_max  <- sub("_mean_","_max_",fout_mean)
+    
+    writeRaster(meanr,fout_mean,overwrite=TRUE)
+    writeRaster(maxr,fout_max,overwrite=TRUE)
+  }
+}
+
+##############################################################################
+##############################################################################
+# This code runs multiple ESMs, SSPs at one time.
+##############################################################################$
 # 1. Load required libraries
 library(terra)
 
@@ -136,4 +242,5 @@ for (model in models) {
       }
   }
 }
+
 
