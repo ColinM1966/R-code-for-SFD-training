@@ -4,7 +4,7 @@
 ##   A. Annual count of days exceeding threshold
 ##   B. Climatological max and mean over a set period
 ################################################################################
-## A. 
+## A. Annual count of days exceeding threshold
 # 1. Load the required packages
 library(terra)
 
@@ -228,5 +228,6 @@ for (scenario in names(scenarios)) {
     }
   }
 }
+
 
 
