@@ -96,9 +96,11 @@ for(block in names(clims)){
     meanr <- app(s,mean,na.rm=TRUE)
     maxr  <- app(s,max,na.rm=TRUE)
     
-    fout_mean <- sprintf("%s%s/%s/%s/%s_%s_mean_%d-%d_%s.tif",
+    fout_mean <- sprintf("%s%s/%s/%s/%s_%s_mean_%s_%s_%d-%d_%s.tif",
                          base_path, ESM, ssp, prefix,
-                         Geo, prefix, clims[[block]]$start, clims[[block]]$end, version)
+                         Geo, prefix, ESM, ssp,
+                         clims[[block]]$start, clims[[block]]$end,
+                         version)
     fout_max  <- sub("_mean_","_max_",fout_mean)
     
     writeRaster(meanr,fout_mean,overwrite=TRUE)
@@ -242,5 +244,6 @@ for (model in models) {
       }
   }
 }
+
 
 
